@@ -1,8 +1,8 @@
 {
   "name": "fell-html",
   "version": "1.0.0",
-  "description": "nodejs,html,gulp",
-  "main": "gulp.js",
+  "description": "Gulp, less + ejs Templates",
+  "main": "gulpfile.js",
   "scripts": {
     "start": "gulp"
   },
