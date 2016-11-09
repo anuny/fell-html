@@ -1,0 +1,27 @@
+{
+	"site":{
+		"sitename":"test demo",
+		"author":"anuny - http://yangfei.name - 2015/06/06",
+		"siteurl":"https://github.com/anuny/fell-html",
+		"keywords":"keywords",
+		"description":"description",
+		"favicon":"static/images/favicon.ico",
+		"lang":"zh-cmn-Hans",
+		"charset":"utf-8",
+		"navigation": [
+			{"url": "index.html", "title": "首页"}
+		]
+	},
+	"system":{
+		"minJs":true,
+		"minCss":true,
+		"concat":false,
+		"fix" : {
+			"tpl"    : "{html,htm,tpl}",
+			"css"    : "{less,css}",
+			"images" : "{jpg,png,gif,bmp,svg,ico}",
+			"fonts"  : "{otf,eot,svg,ttf,woff,woff2}",
+			"html"   : ".html"
+		}
+	} 
+}
