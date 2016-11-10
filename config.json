@@ -16,6 +16,7 @@
 		"minJs":true,
 		"minCss":true,
 		"concat":false,
+		"filter":"@",
 		"fix" : {
 			"tpl"    : "{html,htm,tpl}",
 			"css"    : "{less,css}",

@@ -25,6 +25,7 @@
 </head>
 <!-- /base -->
 <body>
+
 <!-- header -->
 <header>
   <div><img src="static/images/logo.jpg"/></div>
@@ -41,7 +42,7 @@
 {%- endblock %} 
 <!-- /container --> 
 <!-- footer -->
-<footer> </footer>
+<footer>footer </footer>
 {%- block script %}
 {% endblock %} 
 <!-- /footer -->

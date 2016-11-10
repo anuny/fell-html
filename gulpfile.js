@@ -9,6 +9,7 @@ var uglify          = require('gulp-uglify');
 var minifycss       = require('gulp-minify-css');
 var concat          = require('gulp-concat');
 var changed         = require('gulp-changed');
+var gulpif          = require('gulp-if');
 var browserSync     = require("browser-sync");
 var reload          = browserSync.reload;
 
@@ -31,23 +32,26 @@ var BASE = {
 	STATIC : '/static'
 };
 
+
+
+
 var SUFFIX = {
 	TPL    : options.system.fix.tpl||'{html,htm,tpl,ejs}',
 	CSS    : options.system.fix.css||'{less,css}',
 	IMAGES : options.system.fix.images||'{jpg,png,gif,bmp,svg,ico}',
 	FONTS  : options.system.fix.fonts||'{otf,eot,svg,ttf,woff,woff2}',
 	HTML   : options.system.fix.html||'.html',
-	FILTER : '@*.*',
+	FILTER : options.system.filter||'@',
 };
 
 var PATH = {
 	SRC:{
-		HTML   : [ BASE.SRC + '/templates/**/*.' + SUFFIX.TPL,'!'+BASE.SRC + '/templates/**/'+SUFFIX.FILTER],
-		DATAS  : [ BASE.SRC + '/datas/**/*.*','!'+BASE.SRC + '/datas/**/'+SUFFIX.FILTER],
-		CSS    : [ BASE.SRC + BASE.STATIC + '/css/**/*.' + SUFFIX.CSS,'!'+BASE.SRC + BASE.STATIC + '/css/**/'+SUFFIX.FILTER],
-		JS     : [ BASE.SRC + BASE.STATIC + '/js/**/*.js','!'+BASE.SRC + BASE.STATIC + '/js/**/'+SUFFIX.FILTER],
-		IMAGES : [ BASE.SRC + BASE.STATIC + '/images/**/*.' + SUFFIX.IMAGES,'!'+BASE.SRC + BASE.STATIC + '/images/**/'+SUFFIX.FILTER],
-		FONTS  : [ BASE.SRC + BASE.STATIC + '/fonts/**/*.'+ SUFFIX.FONTS,'!'+BASE.SRC + BASE.STATIC + '/fonts/**/'+SUFFIX.FILTER]
+		HTML   : BASE.SRC + '/templates/**/*.' + SUFFIX.TPL,
+		DATAS  : BASE.SRC + '/datas/**/*.*',
+		CSS    : BASE.SRC + BASE.STATIC + '/css/**/*.' + SUFFIX.CSS,
+		JS     : BASE.SRC + BASE.STATIC + '/js/**/*.js',
+		IMAGES : BASE.SRC + BASE.STATIC + '/images/**/*.' + SUFFIX.IMAGES,
+		FONTS  : BASE.SRC + BASE.STATIC + '/fonts/**/*.'+ SUFFIX.FONTS
 	},
 	DIST:{
 		DATAS  : BASE.DIST + '/datas/',
@@ -60,20 +64,23 @@ var PATH = {
 
 
 
+function fileFilter(file){
+	return file.relative.indexOf(SUFFIX.FILTER)==-1
+}
 
 gulp.task('tpl', function () {
     return gulp.src(PATH.SRC.HTML)
 		.pipe(changed(BASE.DIST))
 		.pipe(swig(swigOptions))
 		.pipe(rename({extname: SUFFIX.HTML}))
-		.pipe(gulp.dest(BASE.DIST));
+		.pipe(gulpif(fileFilter,gulp.dest(BASE.DIST)));
 });
 
 gulp.task('css', function () {
     return gulp.src(PATH.SRC.CSS)
 		.pipe(changed(PATH.DIST.CSS))
 		.pipe(less())
-		.pipe(gulp.dest(PATH.DIST.CSS))
+		.pipe(gulpif(fileFilter,gulp.dest(PATH.DIST.CSS)))
 		.pipe(browserSync.stream());
 });
 
@@ -98,28 +105,28 @@ gulp.task('minifyjs', function() {
 gulp.task('js', function () {
     return gulp.src(PATH.SRC.JS)
 		.pipe(changed(PATH.DIST.JS))
-		.pipe(gulp.dest(PATH.DIST.JS))
+		.pipe(gulpif(fileFilter,gulp.dest(PATH.DIST.JS)))
 		.pipe(browserSync.stream());
 });
 
 gulp.task('images', function () {
     return gulp.src(PATH.SRC.IMAGES)
 		.pipe(changed(PATH.DIST.IMAGES))
-		.pipe(gulp.dest(PATH.DIST.IMAGES))
+		.pipe(gulpif(fileFilter,gulp.dest(PATH.DIST.IMAGES)))
 		.pipe(browserSync.stream());
 });
 
 gulp.task('fonts', function () {
     return gulp.src(PATH.SRC.FONTS)
 		.pipe(changed(PATH.DIST.FONTS))
-		.pipe(gulp.dest(PATH.DIST.FONTS))
+		.pipe(gulpif(fileFilter,gulp.dest(PATH.DIST.FONTS)))
 		.pipe(browserSync.stream());
 });
 
 gulp.task('datas', function () {
     return gulp.src(PATH.SRC.DATAS)
 		.pipe(changed(PATH.DIST.DATAS))
-		.pipe(gulp.dest(PATH.DIST.DATAS))
+		.pipe(gulpif(fileFilter,gulp.dest(PATH.DIST.DATAS)))
 		.pipe(browserSync.stream());
 });
 
